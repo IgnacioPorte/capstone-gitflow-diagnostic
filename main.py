@@ -1,8 +1,5 @@
 import json
-# Los top 10 tweets más retweeted.
-# Los top 10 usuarios en función de la cantidad de tweets que emitieron.
-# Los top 10 días donde hay más tweets.
-# Los top 10 hashtags más usados.
+
 
 def top_10_retweeted(data):
     """
@@ -13,7 +10,7 @@ def top_10_retweeted(data):
         top_retweeted.append((one_json['retweetCount'], one_json['content']))
     # sort by retweet count
     top_retweeted.sort(key=lambda x: x[0], reverse=True)
-    return top_retweeted[:10].map(lambda x: x[1])
+    return list(map(lambda x: x[1], top_retweeted[:10]))
 
 
 def top_10_users(data):
@@ -29,7 +26,7 @@ def top_10_users(data):
     pass
     # sort by value
     top_users = sorted(top_users.items(), key=lambda x: x[1], reverse=True)
-    return top_users[:10].map(lambda x: x[0])
+    return list(map(lambda x: x[0], top_users[:10]))
 
 
 def top_10_days(data):
@@ -46,7 +43,8 @@ def top_10_days(data):
             top_days[date] = 1
     # sort by value
     top_days = sorted(top_days.items(), key=lambda x: x[1], reverse=True)
-    return top_days[:10].map(lambda x: x[0])
+    return list(map(lambda x: x[0], top_days[:10]))
+
 
 def top_10_hashtags(data):
     """
@@ -61,15 +59,23 @@ def top_10_hashtags(data):
                 else:
                     top_hashtags[hashtag] = 1
     # sort by value
-    top_hashtags = sorted(top_hashtags.items(), key=lambda x: x[1], reverse=True)
-    return top_hashtags[:10].map(lambda x: x[0])
+    top_hashtags = sorted(top_hashtags.items(),
+                          key=lambda x: x[1], reverse=True)
+    return list(map(lambda x: x[0], top_hashtags[:10]))
 
 
 def main():
-    top_10_retweeted()
-    top_10_users()
-    top_10_days()
-    top_10_hashtags()
+    # read json
+    jsons = []
+    with open('farmers-protest-tweets-2021-03-5.json') as f:
+        for line in f:
+            one_json = json.loads(line)
+            jsons.append(one_json)
+
+    print(top_10_retweeted(jsons))
+    print(top_10_users(jsons))
+    print(top_10_days(jsons))
+    print(top_10_hashtags(jsons))
 
 
 if __name__ == "__main__":
