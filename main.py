@@ -16,11 +16,20 @@ def top_10_retweeted(data):
     return top_retweeted[:10].map(lambda x: x[1])
 
 
-def top_10_users():
+def top_10_users(data):
     """
     Los top 10 usuarios en función de la cantidad de tweets que emitieron.
     """
+    top_users = {}
+    for one_json in data:
+        if one_json['user']['username'] in top_users:
+            top_users[one_json['user']['username']] += 1
+        else:
+            top_users[one_json['user']['username']] = 1
     pass
+    # sort by value
+    top_users = sorted(top_users.items(), key=lambda x: x[1], reverse=True)
+    return top_users[:10].map(lambda x: x[0])
 
 
 def top_10_days():
