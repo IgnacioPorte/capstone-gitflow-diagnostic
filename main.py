@@ -32,12 +32,21 @@ def top_10_users(data):
     return top_users[:10].map(lambda x: x[0])
 
 
-def top_10_days():
+def top_10_days(data):
     """
     Los top 10 días donde hay más tweets.
     """
-    pass
+    top_days = {}
 
+    for one_json in data:
+        date = one_json['date'].split('T')[0]
+        if date in top_days:
+            top_days[date] += 1
+        else:
+            top_days[date] = 1
+    # sort by value
+    top_days = sorted(top_days.items(), key=lambda x: x[1], reverse=True)
+    return top_days[:10].map(lambda x: x[0])
 
 def top_10_hashtags():
     """
