@@ -48,11 +48,21 @@ def top_10_days(data):
     top_days = sorted(top_days.items(), key=lambda x: x[1], reverse=True)
     return top_days[:10].map(lambda x: x[0])
 
-def top_10_hashtags():
+def top_10_hashtags(data):
     """
     Los top 10 hashtags más usados.
     """
-    pass
+    top_hashtags = {}
+    for one_json in data:
+        for hashtag in one_json['content'].split(' '):
+            if hashtag.startswith('#'):
+                if hashtag in top_hashtags:
+                    top_hashtags[hashtag] += 1
+                else:
+                    top_hashtags[hashtag] = 1
+    # sort by value
+    top_hashtags = sorted(top_hashtags.items(), key=lambda x: x[1], reverse=True)
+    return top_hashtags[:10].map(lambda x: x[0])
 
 
 def main():
